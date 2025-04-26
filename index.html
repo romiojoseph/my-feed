@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curated Bluesky Post Feed</title>
+    <meta name="description"
+        content="View posts added to custom lexicon. Browse by category, sort if needed, or open a shared link.">
+    <meta property="og:image" content="assets/social-image.png">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+    <meta property="og:title" content="Curated Bluesky Post Feed">
+    <meta property="og:description"
+        content="View posts added to custom lexicon. Browse by category, sort if needed, or open a shared link.">
+    <meta property="og:image" content="assets/social-image.png">
+    <meta property="og:url" content="https://my-feed.pages.dev/">
+    <meta property="og:type" content="website">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <!-- HLS.js for video playback -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <meta name="robots" content="index, follow">
+</head>
+
+<body>
+
+    <header>
+        <div class="copy-feed">
+            <h1>Bookmarks</h1>
+            <p><span id="current-did"></span></p>
+        </div>
+        <div class="action-btns">
+            <button type="button" id="change-did-button">Change</button>
+            <button type="button" title="Save posts" class="platform"
+                onclick="window.open('/bookmark', '_blank'); return false;" target="_blank" rel="noopener">
+                <i class="ph-fill ph-arrow-up-right"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Controls Area -->
+    <div id="controls-area">
+        <div class="control-group search-group">
+            <input type="search" id="search-input" placeholder="Search posts...">
+        </div>
+        <div class="control-group action-group">
+            <!-- Sort Dropdown -->
+            <div class="dropdown-container">
+                <button id="sort-button" class="control-button" title="Sort">
+                    <i class="ph ph-shuffle"></i> <!-- Default Random Icon -->
+                    <span id="sort-button-text">Random</span>
+                </button>
+                <div id="sort-dropdown" class="sort-popup hidden">
+                    <a href="#" data-sort="random"><i class="ph ph-shuffle"></i> Random</a>
+                    <a href="#" data-sort="newest_save"><i class="ph ph-sort-descending"></i> Newest Save</a>
+                    <a href="#" data-sort="oldest_save"><i class="ph ph-sort-ascending"></i> Oldest Save</a>
+                    <a href="#" data-sort="newest_post"><i class="ph ph-calendar-blank"></i> Newest Post</a>
+                    <a href="#" data-sort="oldest_post"><i class="ph ph-calendar-x"></i> Oldest Post</a>
+                </div>
+            </div>
+            <!-- Filter Dropdown -->
+            <div class="dropdown-container">
+                <button id="filter-button" class="control-button" title="Filter">
+                    <i class="ph ph-funnel"></i>
+                    <span>Filter</span>
+                </button>
+                <div id="filter-dropdown" class="filter-popup hidden">
+                    <h4>Filter by Category</h4>
+                    <div id="filter-categories"></div>
+                    <h4>Filter by Embed Type</h4>
+                    <div id="filter-embeds"></div>
+                    <button id="clear-filters-button">Clear Filters</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for DID Input (Appears only on button click now) -->
+    <div id="did-modal" class="modal hidden">
+        <div id="modal-overlay"></div>
+        <div id="modal-content">
+            <h2>user.bookmark.feed.public</h2>
+            <p>Enter your Bluesky Handle or DID to view posts bookmarked using the custom collection.</p>
+            <input type="text" id="did-input" placeholder="username.bsky.social or did:plc:...">
+            <div class="modal-buttons">
+                <button type="submit" id="submit-did">Load Bookmarks</button>
+                <button type="button" id="copy-feed-url" class="copy-feed-button">Copy Feed URL</button>
+                <button type="button" id="close-modal" class="close-button">×</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for JSON View -->
+    <div id="json-modal" class="modal hidden">
+        <div id="modal-overlay" class="json-overlay"></div>
+        <div id="modal-content" class="json-modal-content">
+            <h2>Post JSON Data</h2>
+            <pre><code id="json-content"></code></pre>
+            <button type="button" id="close-json-modal" class="close-button">×</button>
+        </div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="loading-indicator" class="hidden">
+        <div class="spinner"></div>
+        <p>Loading posts...</p>
+        <p id="loading-progress"></p> <!-- Progress text -->
+    </div>
+
+    <!-- Status Messages -->
+    <div id="status-message"></div>
+
+    <!-- Posts Container (will be populated with columns by JS) -->
+    <main id="posts-container" class="masonry-container"></main>
+
+    <script>
+        // Disable right-click
+        document.addEventListener('contextmenu', e => e.preventDefault());
+
+        // Disable specific key combos
+        document.addEventListener('keydown', function (e) {
+            // F12
+            if (e.key === 'F12') {
+                e.preventDefault();
+            }
+
+            // Ctrl+Shift+I
+            if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') {
+                e.preventDefault();
+            }
+
+            // Ctrl+Shift+J (Chrome DevTools)
+            if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') {
+                e.preventDefault();
+            }
+
+            // Ctrl+U (View source)
+            if (e.ctrlKey && e.key.toLowerCase() === 'u') {
+                e.preventDefault();
+            }
+
+            // Ctrl+Shift+C (Element picker)
+            if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'c') {
+                e.preventDefault();
+            }
+        });
+    </script>
+
+    <!-- Load JavaScript Modules -->
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>

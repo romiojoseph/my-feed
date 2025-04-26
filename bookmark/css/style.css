@@ -1,0 +1,1040 @@
+:root {
+    --primary-base: #0866ff;
+    --primary-light: #EBEFFF;
+    --primary-border: #C6D2FE;
+    --primary-accent: #0B5EC9;
+    --primary-dark: #01183B;
+    --yellow: #fcd34d;
+    --red: #f50c52;
+    --green: #16a34a;
+
+    --obsidian-0: #000000;
+    --obsidian-1: #111111;
+    --obsidian-2: #222222;
+    --obsidian-3: #333333;
+    --obsidian-4: #444444;
+    --obsidian-5: #555555;
+    --obsidian-6: #666666;
+    --obsidian-7: #777777;
+    --obsidian-8: #888888;
+    --obsidian-9: #999999;
+    --obsidian-10: #aaaaaa;
+    --obsidian-11: #bbbbbb;
+
+    --body: "Inter", sans-serif;
+
+    --font-size-heading1: 36px;
+    --font-size-heading2: 32px;
+    --font-size-heading3: 29px;
+    --font-size-heading4: 26px;
+    --font-size-heading5: 23px;
+    --font-size-heading6: 20px;
+    --font-size-subtitle: 18px;
+    --font-size-body: 16px;
+    --font-size-caption: 14px;
+    --font-size-label: 13px;
+    --font-size-tagline: 11px;
+
+    --carousel-max-height: 550px;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--body);
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    transition: all .3s ease;
+    line-height: 1.5;
+    color: var(--obsidian-11);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--obsidian-0);
+}
+
+header {
+    background-color: rgba(0, 0, 0, 0.9);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    position: sticky;
+    top: 0;
+    padding: 12px;
+    z-index: 100;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.header-main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.header-main h1 {
+    margin: 0;
+    font-size: var(--font-size-subtitle);
+    color: var(--obsidian-11);
+}
+
+.user-profile-area {
+    cursor: pointer;
+    padding: 0;
+}
+
+.user-profile-area:hover #user-info {
+    text-decoration: underline;
+}
+
+#user-info {
+    font-size: var(--font-size-tagline);
+    color: var(--obsidian-7);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+#user-info .ph {
+    font-size: 0.8em;
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: auto;
+    padding-left: 1rem;
+}
+
+.header-actions .icon-button {
+    background: none;
+    border: none;
+    color: white;
+    padding: 0 6px;
+    cursor: pointer;
+    font-size: var(--font-size-heading3);
+    line-height: 1;
+    transition: opacity 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-actions .icon-button:hover {
+    opacity: 0.8;
+}
+
+.header-actions .icon-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+main {
+    padding: 0 12px;
+    max-width: 100vw;
+    margin: 8px auto 16px;
+    border-radius: 5px;
+}
+
+section {
+    margin-bottom: 2rem;
+}
+
+h2,
+h3 {
+    color: var(--obsidian-11);
+    padding-bottom: 12px;
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+    font-size: var(--font-size-label);
+    color: var(--obsidian-8);
+}
+
+.redirect-home {
+    padding: 16px 0 !important;
+}
+
+select {
+    background-color: var(--obsidian-1);
+    color: var(--obsidian-11);
+    font-size: var(--font-size-caption);
+    cursor: pointer;
+}
+
+option {
+    background-color: var(--obsidian-1);
+    color: var(--obsidian-11);
+}
+
+#edit-category-select,
+#category-select {
+    border: none;
+    border-left: 4px solid var(--obsidian-3);
+    padding-left: 8px !important;
+    padding: 0;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    margin: 8px 0;
+}
+
+#new-category,
+#edit-category {
+    text-transform: capitalize;
+}
+
+
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="url"] {
+    width: 100%;
+    padding: 12px 20px;
+    border: 2px solid var(--obsidian-1);
+    background-color: var(--obsidian-0);
+    border-radius: 12px;
+    font-size: var(--body);
+    outline: none;
+    color: var(--obsidian-11);
+    transition: all 0.3s ease;
+}
+
+.form-group input[type="text"]:hover,
+.form-group input[type="password"]:hover,
+.form-group input[type="url"]:hover {
+    border-color: var(--obsidian-3);
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="password"]:focus,
+.form-group input[type="url"]:focus {
+    border-color: var(--obsidian-6);
+    background-color: var(--obsidian-1);
+}
+
+.form-group input[type="text"]:active,
+.form-group input[type="password"]:active,
+.form-group input[type="url"]:active {
+    border-color: var(--obsidian-7);
+    background-color: var(--obsidian-2);
+}
+
+.form-group input[type="text"]:disabled,
+.form-group input[type="password"]:disabled,
+.form-group input[type="url"]:disabled {
+    background-color: var(--obsidian-1);
+    color: var(--obsidian-8);
+    font-weight: 500;
+    border: none;
+    cursor: not-allowed;
+}
+
+
+/* NEW: Validation Status Area */
+.validation-status {
+    font-size: 0.8rem;
+    margin-top: 0.4rem;
+    min-height: 1.2em;
+    /* Prevent layout shifts */
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.validation-status .ph {
+    /* Icon style */
+    font-size: 1.1em;
+}
+
+.validation-status.valid {
+    color: green;
+}
+
+.validation-status.invalid {
+    color: #dc3545;
+}
+
+.validation-status.warning {
+    color: #ffc107;
+}
+
+.validation-status.checking {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 16px 0;
+}
+
+.validation-status.checking i {
+    font-size: var(--font-size-body);
+    color: var(--obsidian-11) !important;
+    vertical-align: middle;
+    margin-right: 2px;
+}
+
+.validation-status.checking>div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    margin-right: 16px;
+}
+
+.checking .ph-spinner {
+    animation: spin 1.5s linear infinite;
+}
+
+#link-validation-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.form-group #link-validation-status:empty {
+    display: none;
+}
+
+
+.duplicate-details {
+    font-size: var(--font-size-caption);
+    color: var(--obsidian-11);
+    font-weight: 500;
+}
+
+button {
+    background-color: var(--primary-base);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: var(--font-size-body);
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: var(--primary-accent);
+}
+
+button:disabled {
+    background-color: var(--obsidian-2);
+    cursor: not-allowed;
+    color: var(--obsidian-5);
+}
+
+.security-warning {
+    background-color: var(--obsidian-1);
+    border: 1px dashed var(--obsidian-2);
+    color: var(--obsidian-8);
+    padding: 16px;
+    border-radius: 12px;
+    font-size: var(--font-size-label) !important;
+    position: fixed;
+    z-index: 1001;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 720px;
+    width: calc(100% - 24px);
+}
+
+#login-section a,
+.security-warning a {
+    color: var(--obsidian-9);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.security-warning code {
+    color: var(--obsidian-8);
+    font-weight: 500;
+    font-family: monospace;
+}
+
+@media (hover: hover) {
+
+    #login-section a:hover,
+    .security-warning a:hover {
+        color: var(--obsidian-8);
+        text-decoration: underline;
+    }
+}
+
+.breadcrumbs {
+    display: flex;
+    gap: 8px;
+    font-size: var(--font-size-caption);
+    color: var(--obsidian-8);
+}
+
+.breadcrumbs a {
+    color: var(--obsidian-9);
+    text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+    text-decoration: none;
+}
+
+.breadcrumbs span {
+    font-weight: 600;
+    color: var(--obsidian-11);
+}
+
+#sub-header-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 16px 0 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+#counts-area {
+    font-size: var(--font-size-heading5);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.count-value {
+    font-weight: 600;
+}
+
+.count-label {
+    color: var(--obsidian-9);
+}
+
+.count-separator {
+    margin: 0 6px;
+    color: var(--obsidian-3);
+}
+
+#view-sort-filter-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.view-toggle {
+    display: flex;
+    border: 1px solid var(--obsidian-2);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.view-toggle .icon-button.view-button {
+    padding: 8px 12px;
+    font-size: var(--font-size-subtitle);
+    background-color: var(--obsidian-1);
+    border: none;
+    border-radius: 0;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.view-toggle i {
+    color: var(--obsidian-8);
+    vertical-align: middle;
+}
+
+.view-toggle .icon-button.view-button:last-child {
+    border-right: none;
+}
+
+.view-toggle .icon-button.view-button.active {
+    background-color: var(--primary-base);
+}
+
+.view-toggle .icon-button.view-button.active i {
+    color: #fff;
+}
+
+@media (hover: hover) {
+    .view-toggle .icon-button.view-button:not(.active):hover {
+        background-color: var(--obsidian-2);
+    }
+
+    .view-toggle .icon-button.view-button:hover {
+        background-color: var(--primary-accent);
+    }
+}
+
+
+
+#list-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+#sort-filter-controls select,
+#sort-filter-controls button {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+#category-filter {
+    appearance: none;
+    outline: none;
+}
+
+#category-filter,
+#sort-button {
+    background-color: var(--obsidian-1);
+    color: var(--obsidian-11);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 8px 12px;
+    font-size: var(--font-size-caption);
+    border-radius: 8px;
+    border: 1px solid var(--obsidian-2);
+}
+
+#category-filter:hover,
+#sort-button:hover {
+    background-color: var(--obsidian-2);
+}
+
+#sort-button i {
+    font-size: 1.1em;
+}
+
+.controls-hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 0.5rem 0 1.5rem 0;
+}
+
+.folder-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    cursor: pointer;
+    width: 100%;
+}
+
+.folder-item i {
+    font-size: var(--font-size-heading1);
+    color: var(--obsidian-5);
+}
+
+.folder-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+.folder-name {
+    font-size: var(--font-size-body);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    display: block;
+    width: 100%;
+}
+
+.folder-timestamp {
+    font-size: var(--font-size-label);
+    color: var(--obsidian-6);
+    margin: 4px 0 0;
+}
+
+.folder-count {
+    font-size: var(--font-size-label);
+    color: var(--obsidian-11);
+    background-color: var(--obsidian-0);
+    border: 1px solid var(--obsidian-2);
+    padding: 4px 12px;
+    border-radius: 50px;
+    height: fit-content;
+}
+
+#bookmark-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(342px, 1fr));
+    gap: 16px;
+}
+
+.bookmark-card,
+.folder-item {
+    padding: 16px;
+    border: 1px solid var(--obsidian-2);
+    border-radius: 16px;
+    background-color: var(--obsidian-1);
+    overflow: hidden;
+    transition: all .32s ease-in-out;
+}
+
+@media (hover: hover) {
+
+    .bookmark-card:hover,
+    .folder-item:hover {
+        transform: translateY(-2px);
+    }
+
+}
+
+.bookmark-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    word-wrap: break-word;
+}
+
+.bookmark-card h4 {
+    font-size: var(--font-size-caption);
+    font-weight: 600;
+    color: var(--obsidian-8);
+    word-break: break-all;
+}
+
+.bookmark-card .card-category {
+    font-size: var(--font-size-tagline);
+    color: var(--obsidian-9);
+    background-color: var(--obsidian-2);
+    width: fit-content;
+    border-radius: 50px;
+    padding: 6px 12px;
+    font-weight: 500;
+    margin: 6px 0 8px;
+    line-height: 1.0;
+    display: block;
+}
+
+.bookmark-card p {
+    font-size: var(--font-size-body);
+    color: var(--obsidian-8);
+    margin: 4px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bookmark-card .timestamp {
+    font-size: var(--font-size-label);
+    color: var(--obsidian-7) !important;
+    font-style: italic;
+    margin: 0;
+}
+
+.bookmark-card .timestamp time {
+    color: var(--obsidian-6) !important;
+}
+
+.bookmark-card i {
+    font-size: var(--font-size-subtitle);
+    color: var(--obsidian-7);
+    vertical-align: middle;
+}
+
+#edit-post-uri,
+.bookmark-card .post-link {
+    color: var(--obsidian-11);
+    white-space: wrap;
+    width: 100%;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+#edit-post-uri a.post-link:hover,
+.bookmark-card .post-link:hover {
+    text-decoration: none;
+    color: var(--obsidian-8);
+}
+
+.bookmark-card .card-actions {
+    border-top: 1px dashed var(--obsidian-3);
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 12px 0 0;
+    margin: 12px 0 0;
+}
+
+.bookmark-card .card-actions button {
+    padding: 4px 12px;
+    font-size: var(--font-size-label);
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.bookmark-card .edit-button {
+    background-color: #ffc107;
+    color: var(--obsidian-0);
+}
+
+.bookmark-card .edit-button:hover {
+    background-color: #e0a800;
+}
+
+.bookmark-card .delete-button {
+    background-color: #dc3545;
+    color: white;
+}
+
+.bookmark-card .delete-button:hover {
+    background-color: #c82333;
+}
+
+#message-area {
+    padding: 1rem;
+    border-radius: 12px;
+    text-align: center;
+    position: fixed;
+    z-index: 1001;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: fit-content;
+    animation: fadeOut 5s forwards;
+    animation-delay: 5s;
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+#message-area.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+#link-validation-status .ph-seal-check {
+    color: var(--green) !important;
+}
+
+#link-validation-status .ph-x-circle {
+    color: var(--red) !important;
+}
+
+#message-area.info {
+    background-color: #d1ecf1;
+    color: var(--obsidian-0);
+}
+
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    -webkit-backdrop-filter: blur(16px) !important;
+    backdrop-filter: blur(16px) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: rgba(0, 0, 0, 0.9);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    margin: auto;
+    padding: 24px;
+    border: 1px solid var(--obsidian-2);
+    width: 90%;
+    max-width: 540px;
+    border-radius: 24px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.close-button {
+    color: var(--obsidian-6);
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: var(--font-size-heading4);
+    font-weight: 400;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--obsidian-11);
+    text-decoration: none;
+}
+
+.modal-actions {
+    margin-top: 24px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 16px;
+}
+
+.button-secondary {
+    background-color: #6c757d;
+}
+
+.button-secondary:hover {
+    background-color: #5a6268;
+}
+
+.button-danger {
+    background-color: #dc3545;
+}
+
+.button-danger:hover {
+    background-color: #c82333;
+}
+
+.modal-content p {
+    word-wrap: break-word;
+    margin: 0 0 16px;
+    width: 100%;
+    font-size: var(--font-size-caption);
+    color: var(--obsidian-9);
+}
+
+
+
+.controls-hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 0.5rem 0 1.5rem 0;
+}
+
+
+.hidden {
+    display: none !important;
+}
+
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    -webkit-backdrop-filter: blur(16px) !important;
+    backdrop-filter: blur(16px) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    color: var(--obsidian-11);
+    flex-direction: column;
+}
+
+.loading-content {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+
+.loading-content .ph-spinner {
+    font-size: var(--font-size-subtitle);
+    display: block;
+    animation: spin 1.5s linear infinite;
+}
+
+#loading-text {
+    font-size: var(--font-size-body);
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#logged-out-title {
+    font-size: var(--font-size-body);
+    margin: 0 0 4px;
+}
+
+#login-section:has(.active)~.header-actions {
+    display: none;
+}
+
+#login-section h2 {
+    font-size: var(--font-size-heading5);
+    font-weight: 500;
+    margin: 32px 0 8px;
+}
+
+#login-section p {
+    font-size: var(--font-size-caption);
+    color: var(--obsidian-8);
+    margin: 0 0 24px;
+}
+
+#login-section {
+    max-width: 720px;
+    margin: 40px auto 0;
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        margin: 0;
+        padding: 24px 24px 48px;
+        border: none;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 24px 24px 0 0;
+        position: fixed;
+        bottom: 0;
+        border-top: 2px solid var(--obsidian-2);
+    }
+
+    #sub-header-controls {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
+    #view-sort-filter-controls {
+        flex-direction: row-reverse;
+    }
+
+    .view-toggle {
+        flex-direction: row-reverse;
+    }
+
+    #bookmark-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 12px;
+    }
+
+    main {
+        padding: 0 8px;
+    }
+
+    header {
+        padding: 12px 8px;
+    }
+
+}
+
+/* Styling for breadcrumb refresh button */
+#breadcrumb-refresh-button {
+    margin-right: 6px;
+    background: none;
+    border: none;
+    color: var(--obsidian-11);
+    padding: 0;
+    cursor: pointer;
+    font-size: var(--font-size-caption);
+    line-height: 1;
+    vertical-align: middle;
+}
+
+/* Styling for JSON details display */
+.bookmark-details-json {
+    overflow: scroll;
+    scrollbar-width: none;
+    color: var(--obsidian-10);
+    font-size: var(--font-size-caption);
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* Make record key clickable */
+.record-key {
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.record-key:hover {
+    color: var(--primary-base);
+    text-decoration: underline;
+}
+
+/* Add styles for the bookmark card clickable elements */
+.bookmark-card h4 {
+    font-size: var(--font-size-caption);
+    color: var(--obsidian-9);
+    font-weight: 600;
+    display: inline-block;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.bookmark-card h4:hover {
+    color: var(--obsidian-11);
+    text-decoration: underline;
+}
+
+/* Export button styling */
+
+
+#export-button {
+    font-size: 1.6rem;
+    padding: 0 6px;
+    color: var(--obsidian-11);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#export-button .ph-fill {
+    font-size: var(--font-size-heading3);
+}
+
+#export-button:hover {
+    color: var(--primary-base);
+}
+
+/* Style for post URI in edit modal */
+#edit-post-uri a.post-link {
+    color: var(--obsidian-11);
+    text-decoration: none;
+    word-break: break-all;
+    transition: color 0.2s ease;
+    font-family: monospace;
+    font-size: var(--font-size-caption);
+}
+
+#edit-post-uri a.post-link:hover {
+    color: var(--primary-base);
+    text-decoration: underline;
+}

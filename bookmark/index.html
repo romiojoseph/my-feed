@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save and Manage Bluesky Posts (Bookmark it)</title>
+    <meta name="description"
+        content="Add posts to your own custom lexicon. Tag, sort, and export everything. Your posts are saved in your own repo. To view them, use the feed tool.">
+    <meta property="og:image" content="assets/social-image.png">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+    <meta property="og:title" content="Save and Manage Bluesky Posts (Bookmark it)">
+    <meta property="og:description"
+        content="Add posts to your own custom lexicon. Tag, sort, and export everything. Your posts are saved in your own repo. To view them, use the feed tool.">
+    <meta property="og:image" content="assets/social-image.png">
+    <meta property="og:url" content="https://my-feed.pages.dev/bookmark/">
+    <meta property="og:type" content="website">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script> /* HTTPS Warning */ if (location.protocol !== 'https:') console.warn("WARNING: Not using HTTPS."); </script>
+
+    <meta name="robots" content="index, follow">
+</head>
+
+<body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-content"><i class="ph-duotone ph-spinner"></i><span id="loading-text">Loading...</span>
+        </div>
+    </div>
+
+    <header>
+        <!-- ... (header content remains the same) ... -->
+        <div class="header-main">
+            <div id="user-profile-trigger" class="user-profile-area hidden" title="Click to Logout">
+                <h1>Bookmarks</h1>
+                <div id="user-info">Logged in as: <span id="user-display-name"></span> <i class="ph ph-caret-down"></i>
+                </div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button id="add-bookmark-button" class="icon-button hidden" title="Add New Bookmark">
+                <i class="ph-fill ph-plus-circle"></i>
+            </button>
+            <!-- Export button (replacing refresh button in header) -->
+            <button id="export-button" class="icon-button hidden" title="Export Bookmarks">
+                <i class="ph-fill ph-arrow-circle-down"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Login Section -->
+        <section id="login-section">
+            <!-- ... (login form content remains the same) ... -->
+
+            <div class="platform-head">
+                <h1 id="logged-out-title">Bluesky Bookmarks</h1>
+                <p>I created this to save and categorize posts. Feel free to use it. <a
+                        href="https://skywrite.pages.dev/?DID=did%3Aplc%3Axglrcj6gmrpktysohindaqhj&amp;view-post=bluesky-bookmarks-feed"
+                        title="A doc to help you learn how it works" target="_blank" rel="noopener">Learn how
+                        it works</a>
+                </p>
+            </div>
+            <h2>Connect with Bluesky</h2>
+            <form id="login-form">
+                <div class="form-group"><label for="identifier">Bluesky Handle</label><input type="text" id="identifier"
+                        name="identifier" required placeholder="username.bsky.social"></div>
+                <div class="form-group">
+                    <label for="app-password">App Password</label>
+                    <input type="password" id="app-password" name="app-password" required
+                        placeholder="Enter app password, not main password">
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <p class="security-warning">Disclaimer: Use a Bluesky App Password, not your main password. <a
+                    href="https://bsky.app/settings/app-passwords" target="_blank" rel="noopener noreferrer">Create App
+                    Password</a>. Everything you add will be saved in your own repo under a custom lexicon:
+                <code>user.bookmark.feed.public</code>. You can add, edit, delete and export your bookmarks anytime. I
+                also made a small frontend to view the saved posts. Since this is more like a collection and not a
+                regular feed, other clients won't show it by default.
+            </p>
+        </section>
+
+        <!-- Bookmarks Section -->
+        <section id="bookmarks-section" class="hidden">
+            <!-- Breadcrumbs -->
+            <div id="breadcrumbs" class="breadcrumbs"></div>
+            <!-- Controls: Count, View Toggle, Sort, Filter -->
+            <div id="sub-header-controls">
+                <div id="counts-area"><span id="total-post-count" class="count-value">0</span> <span
+                        class="count-label">Posts</span><span class="count-separator">|</span><span id="category-count"
+                        class="count-value">0</span> <span class="count-label">Categories</span></div>
+                <div id="view-sort-filter-controls">
+                    <div id="list-controls" class="hidden"><select id="category-filter" title="Filter by Category">
+                            <option value="all">All Categories</option>
+                        </select></div>
+                    <button id="sort-button" class="hidden"><i class="ph ph-sort-ascending"></i>Sort</button>
+                    <div class="view-toggle"><button id="list-view-button" class="icon-button view-button"
+                            title="List View"><i class="ph-bold ph-list"></i></button><button id="folder-view-button"
+                            class="icon-button view-button active" title="Folder View"><i
+                                class="ph-bold ph-folder"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div id="bookmark-list"></div>
+        </section>
+
+        <!-- Message Area -->
+        <div id="message-area" class="hidden"></div>
+
+        <!-- MODALS -->
+        <div id="add-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button" data-modal-id="add-modal">×</span>
+                <h3>Add New Bookmark</h3>
+                <form id="add-bookmark-form">
+                    <div class="form-group">
+                        <label for="post-link">Bluesky Post Link (bsky.app or at://):</label>
+                        <input type="text" id="post-link" name="post-link" required
+                            placeholder="https://bsky.app/profile/... or at://...">
+                        <div id="link-validation-status" class="validation-status"></div>
+                    </div>
+                    <div id="category-select-group" class="form-group hidden">
+                        <select id="category-select" name="category-select" title="Category selection">
+                            <option value="">Pick a category or create new</option>
+                            <option value="other">Other (create new)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-category">Category:</label>
+                        <input type="text" id="new-category" name="new-category" required
+                            placeholder="e.g., Tech, Funny">
+                    </div>
+                    <!-- Initially disable add button until link is validated -->
+                    <button type="submit" id="add-bookmark-submit-button" disabled>Add Bookmark</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Edit modal (updated with category dropdown) -->
+        <div id="edit-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button" data-modal-id="edit-modal">×</span>
+                <h3>Edit Bookmark Category</h3>
+                <p><i class="ph-duotone ph-link"></i> <a id="edit-post-uri" target="_blank" rel="noopener noreferrer"
+                        class="post-link"></a></p>
+                <form id="edit-bookmark-form">
+                    <input type="hidden" id="edit-rkey">
+                    <input type="hidden" id="edit-created-at">
+                    <input type="hidden" id="edit-original-uri">
+                    <div id="edit-category-select-group" class="form-group hidden">
+                        <select id="edit-category-select" name="edit-category-select" title="Category selection">
+                            <option value="">Pick a category or create new</option>
+                            <option value="other">Other (create new)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-category">Category:</label>
+                        <input type="text" id="edit-category" name="edit-category" required
+                            placeholder="e.g., Tech, Funny">
+                    </div>
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Logout modal (existing) -->
+        <div id="logout-confirm-modal" class="modal hidden">
+            <div class="modal-content"> <span class="close-button" data-modal-id="logout-confirm-modal">×</span>
+                <h3>Logout</h3>
+                <p>Are you sure you want to logout?</p>
+                <div class="modal-actions"><button id="confirm-logout-no" class="button-secondary">No</button><button
+                        id="confirm-logout-yes" class="button-danger">Yes, Logout</button></div>
+            </div>
+        </div>
+
+        <!-- Delete Confirmation Modal (updated) -->
+        <div id="delete-confirm-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button" data-modal-id="delete-confirm-modal">×</span>
+                <h3>Delete Bookmark</h3>
+                <p>Are you sure you want to delete this bookmark?</p>
+                <p><strong>Record Key:</strong> <span id="delete-rkey"></span></p>
+                <div class="modal-actions">
+                    <button id="confirm-delete-yes" class="button-danger">Yes, Delete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Modal (updated) -->
+        <div id="export-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button" data-modal-id="export-modal">×</span>
+                <h3>Export Bookmarks</h3>
+                <p>This will download a JSON file with all your bookmarks, including categories, timestamps, and URLs.
+                </p>
+                <div class="modal-actions">
+                    <button id="export-confirm-button">Export</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: Details Modal -->
+        <div id="details-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button" data-modal-id="details-modal">×</span>
+                <h3>Bookmark Details</h3>
+                <pre id="details-content" class="bookmark-details-json"></pre>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Disable right-click
+        document.addEventListener('contextmenu', e => e.preventDefault());
+
+        // Disable specific key combos
+        document.addEventListener('keydown', function (e) {
+            // F12
+            if (e.key === 'F12') {
+                e.preventDefault();
+            }
+
+            // Ctrl+Shift+I
+            if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') {
+                e.preventDefault();
+            }
+
+            // Ctrl+Shift+J (Chrome DevTools)
+            if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') {
+                e.preventDefault();
+            }
+
+            // Ctrl+U (View source)
+            if (e.ctrlKey && e.key.toLowerCase() === 'u') {
+                e.preventDefault();
+            }
+
+            // Ctrl+Shift+C (Element picker)
+            if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'c') {
+                e.preventDefault();
+            }
+        });
+    </script>
+
+    <!-- JS Files -->
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/blueskyApi.js"></script>
+    <script type="module" src="js/ui.js"></script>
+    <script type="module" src="js/script.js"></script>
+</body>
+
+</html>
